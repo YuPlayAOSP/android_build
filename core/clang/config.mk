@@ -26,7 +26,7 @@ CLANG_CONFIG_EXTRA_CPPFLAGS :=
 CLANG_CONFIG_EXTRA_LDFLAGS :=
 
 CLANG_CONFIG_EXTRA_CFLAGS += \
-  -D__compiler_offsetof=__builtin_offsetof
+  -w -O3 -Qunused-arguments -Wno-unknown-warning-option -D__compiler_offsetof=__builtin_offsetof
 
 # Help catch common 32/64-bit errors.
 CLANG_CONFIG_EXTRA_CFLAGS += \
@@ -51,6 +51,11 @@ CLANG_CONFIG_EXTRA_CFLAGS += \
 # codebase for it.
 CLANG_CONFIG_EXTRA_CPPFLAGS += \
   -Wno-inconsistent-missing-override
+
+# Force clang to always output color diagnostics.  Ninja will strip the ANSI
+# color codes if it is not running in a terminal.
+CLANG_CONFIG_EXTRA_CFLAGS += \
+  -fcolor-diagnostics
 
 CLANG_CONFIG_UNKNOWN_CFLAGS := \
   -finline-functions \
@@ -77,7 +82,15 @@ CLANG_CONFIG_UNKNOWN_CFLAGS := \
   -Wno-unused-but-set-variable \
   -Wno-unused-local-typedefs \
   -Wunused-but-set-parameter \
-  -Wunused-but-set-variable
+  -Wunused-but-set-variable \
+  -fdiagnostics-color \
+  -fmodulo-sched \
+  -fmodulo-sched-allow-regmoves \
+  -mvectorize-with-neon-quad \
+  -fpredictive-commoning \
+  -ftree-loop-vectorize \
+  -ftree-partial-pre \
+  -fipa-cp-clone
 
 # Clang flags for all host rules
 CLANG_CONFIG_HOST_EXTRA_ASFLAGS :=
